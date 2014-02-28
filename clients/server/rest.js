@@ -44,7 +44,8 @@ var RestClient = exports.Client = ServerBase.extend({
 
   poolDefaults: {
     max: 1,
-    min: 1
+    min: 1,
+    destroy: function(client){}
   },
 
   ddl: function(connection, sql, bindings, builder) {

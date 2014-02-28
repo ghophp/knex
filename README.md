@@ -24,7 +24,7 @@ Open a connection with the url that translate the queries:
 var knex = null;
 var Knex = require('knex');
 Knex.knex = Knex.initialize({
-	client: 'sqlite3',
+	client: 'catalog',
 	connection: {
 		url: '/db/'
 	}
