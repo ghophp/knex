@@ -39,12 +39,94 @@ knex('books')
 	});
 ```
 
+Create a server that handle /db/, that will receive the SQL to perform at the sqlite3 database. 
+
+Current example use python sample (server.py):
+
+``` python
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+import handlers
+import mimetypes
+import cyclone.web
+from twisted.python import log
+
+def run():
+    mimetypes.init()
+    settings = dict(
+        assets_path="../data",
+        assets_url="/static",
+        template_path="../data/templates",
+        debug=True,
+        xheaders=True,
+        xsrf_cookies=False,
+        cookie_secret="TTXFxQWGVR37Tk4jq1L46KcobLz0N2"
+    )
+
+    current_path = os.getcwd()
+    sys.path.append(current_path)
+
+    routes = [
+        (r'/db/', handlers.DbHandler),  
+    ]
+
+    application = cyclone.web.Application(routes, **settings)
+
+    from twisted.internet import reactor
+
+    log.startLogging(sys.stdout)
+    reactor.listenTCP(8888, application)
+    reactor.run()
+
+
+if __name__ == '__main__':
+    run()
+
+```
+
+And the handlers.py:
+
+``` python
+# -*- coding: utf-8 -*-
+
+import os
+import pystache
+import cyclone.web
+
+class DbHandler(cyclone.web.RequestHandler):
+
+	def post(self):
+
+		sql = self.get_argument('sql', None)
+		bindings = self.get_argument('bindings[]', None)
+		if sql is not None:
+			print sql
+
+		if bindings is not None:
+			print bindings
+
+		self.write('{\
+		    "success": true,\
+		    "data": {\
+		        "count": 1,\
+		        "rows": [\
+		            {"id": 2, "name": "guilherme", "blah": false}\
+		        ]\
+		    }\
+		}')
+```
+
+At this sample, the client side will request a SQL to the 
+
 To see more about, check out the example folder.
 
 Why?
 ====
 
-We want to give real powers to client side with single page apps based on ```Backbone.JS``` and ```Marionette.JS```. And we are not fans of Node.JS either :)
+We want to give real powers to client side with single page apps based on ```Backbone.JS``` and ```Marionette.JS```.
+With this fork you can allow the client side to interact with database, with a high level query builder interface.
 
 
 Strip off the Node.JS

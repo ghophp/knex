@@ -36,7 +36,7 @@ var RestClient = exports.Client = ServerBase.extend({
     var method = (builder.type === 'insert' || builder.type === 'update' || builder.type === 'delete') ? 'run' : 'all';
 
     var dfd = Promise.pending();
-    $.post(this.connectionSettings.url, {}, function(result){
+    $.post(this.connectionSettings.url, {sql: sql, bindings: bindings}, function(result){
       return dfd.fulfill([result, this]);
     }, 'json');
     return dfd.promise;
