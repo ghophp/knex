@@ -20,6 +20,7 @@ var Promise     = require('./lib/promise').Promise;
 var ClientBase       = require('./clients/base').ClientBase;
 var SchemaBuilder    = require('./lib/schemabuilder').SchemaBuilder;
 var SchemaInterface  = require('./lib/schemainterface').SchemaInterface;
+var RestClient    = require('./clients/server/rest').Client;
 
 // The `Knex` module, taking either a fully initialized
 // database client, or a configuration to initialize one. This is something
@@ -37,12 +38,7 @@ var Knex = function(config) {
     if (typeof define === 'function' && define.amd) {
       throw new Error('A valid `Knex` client must be passed into the Knex constructor.');
     } else  {
-      var clientName = config.client;
-      if (!Clients[clientName]) {
-        throw new Error(clientName + ' is not a valid Knex client, did you misspell it?');
-      }
-      Dialect = require(Clients[clientName]);
-      client = new Dialect.Client(_.omit(config, 'client'));
+      client = new RestClient(_.omit(config, 'client'));
     }
   }
 
@@ -96,29 +92,13 @@ var Knex = function(config) {
     return new Transaction(knex).run(container);
   };
 
-  // Attach each of the `Migrate` "interface" methods directly onto to `knex.migrate` namespace, e.g.:
-  // knex.migrate.latest().then(...
-  // knex.migrate.currentVersion(...
-  _.each(['make', 'latest', 'rollback', 'currentVersion'], function(method) {
-    knex.migrate[method] = function() {
-      var Migrate   = require('./lib/migrate');
-      var migration = new Migrate(knex);
-      return migration[method].apply(migration, arguments);
-    };
-  });
-
   // Return the new `Knex` instance.
   return knex;
 };
 
 // The client names we'll allow in the `{name: lib}` pairing.
 var Clients = Knex.Clients = {
-  'mysql'      : './clients/server/mysql.js',
-  'pg'         : './clients/server/postgres.js',
-  'postgres'   : './clients/server/postgres.js',
-  'postgresql' : './clients/server/postgres.js',
-  'sqlite'     : './clients/server/sqlite3.js',
-  'sqlite3'    : './clients/server/sqlite3.js'
+  'catalog'    : './clients/server/catalog'
 };
 
 // Used primarily to type-check a potential `Knex` client in `Bookshelf.js`,

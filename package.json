@@ -1,7 +1,7 @@
 {
   "name": "knex",
   "version": "0.5.7",
-  "description": "A query builder for Postgres, MySQL and SQLite3, designed to be flexible, portable, and fun to use.",
+  "description": "Client side javascript query builder, allow plug into rest service.. really fun to use.",
   "main": "knex.js",
   "directories": {
     "test": "test"
@@ -9,9 +9,6 @@
   "devDependencies": {
     "mocha": "~1.15.1",
     "objectdump": "~0.3.0",
-    "mysql": "~2.0.0-rc2",
-    "pg": "~2.8.2",
-    "sqlite3": "~2.1.7",
     "node-uuid": "~1.4.0",
     "chai": "~1.8.1",
     "rimraf": "~2.2.2",
@@ -25,7 +22,6 @@
   "dependencies": {
     "generic-pool-redux": "~0.1.0",
     "optimist": "~0.6.0",
-    "mkdirp": "~0.3.5",
     "bluebird": "~1.0.0",
     "colors": "~0.6.2",
     "lodash": ">=2.4.0"
@@ -44,13 +40,11 @@
   "keywords": [
     "sql",
     "query",
-    "postgresql",
-    "mysql",
-    "sqlite3"
+    "javascript"
   ],
   "author": {
-    "name": "Tim Griesser",
-    "web": "https://github.com/tgriesser"
+    "name": "Guilherme Oliveira",
+    "web": "https://github.com/ghophp"
   },
   "license": "MIT"
 }
