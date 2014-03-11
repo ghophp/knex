@@ -18,7 +18,7 @@ Put this scripts at your html:
 <script src="knex-bundle.js"></script>
 ```
 
-Take a look at: https://github.com/ghophp/test-knex-nonode you can find a fully functional example.
+Take a look at: https://github.com/humantech/test-knex-nonode you can find a fully functional example.
 
 Open a connection with the url that translate the queries:
 
